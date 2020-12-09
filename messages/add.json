@@ -1,6 +1,9 @@
 {
   "commandDescription": "Add stuff to your permission sets",
-  "nameFlagDescription": "name to print",
-  "forceFlagDescription": "example boolean flag",
-  "errorNoPermSet": "No."
+  "permissionSetDescription": "Comma seperated list of Permission Set Developer names",
+  "justBranchDescription": "Just add the files that are different between this git branch and master",
+  "permsetpathDescription": "The path to your permissionset directory.",
+  "objectPathDescription": "The path to your object metadata.",
+  "nopromptDescription": "Do the updates without prompting",
+  "errorCheckoutABranch": "Branch was specified (--justbranch or -j) so checkout a branch (other than '%s')"
 }
