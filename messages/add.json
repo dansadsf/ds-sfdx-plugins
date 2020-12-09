@@ -1,0 +1,6 @@
+{
+  "commandDescription": "Add stuff to your permission sets",
+  "nameFlagDescription": "name to print",
+  "forceFlagDescription": "example boolean flag",
+  "errorNoPermSet": "No."
+}
