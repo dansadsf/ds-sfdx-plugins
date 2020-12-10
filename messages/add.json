@@ -1,9 +1,18 @@
 {
-  "commandDescription": "Add stuff to your permission sets",
-  "permissionSetDescription": "Comma seperated list of Permission Set Developer names",
-  "justBranchDescription": "Just add the files that are different between this git branch and master",
-  "permsetpathDescription": "The path to your permissionset directory.",
-  "objectPathDescription": "The path to your object metadata.",
+  "commandDescription": "Add fields from your current branch to your permission sets",
+
+  "permissionSetDescription": "Comma seperated list of Permission Set names",
+  "addEverythingDescription": "Add every field to permission set, not just current branch",
+  "permsetpathDescription": "The path to your Permission Set metadata",
+  "objectPathDescription": "The path to your Object metadata",
   "nopromptDescription": "Do the updates without prompting",
-  "errorCheckoutABranch": "Branch was specified (--justbranch or -j) so checkout a branch (other than '%s')"
+  "readDescription": "Allow read",
+  "editDescription": "Allow edit",
+  
+  "longFieldConfirm": "These fields:\n%s\n will be added to %s, both read and write.\n Ok? (y/n)",
+  "shortFieldConfirm": "%s fields will be added to %s (both read and write).\n Ok? (y/n)",
+  "summary": "Wrote %s fields to %s",
+  
+  "errorCheckoutABranch": "Checkout a branch (other than '%s') or use --addeverything",
+  "errorPermissionMismatch": "Permission mismatch. If --readpermission is 'false' then --editpermission cannot be 'true'"
 }

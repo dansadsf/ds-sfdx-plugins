@@ -1,4 +1,4 @@
-import { core, flags, SfdxCommand } from '@salesforce/command';
+import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 const {execSync} = require('child_process');
@@ -11,7 +11,7 @@ Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages('permSetStuffer', 'add');
+const messages = Messages.loadMessages('permission-set-stuffer', 'add');
 
 export default class Add extends SfdxCommand {
 
@@ -20,17 +20,20 @@ export default class Add extends SfdxCommand {
   public static examples = [
   `$ sfdx permSetStuff:add --permissionset Permission_Set_Devname,Other_Permission_Set 
   `,
-  `$ sfdx permSetStuff:add --permissionset Permission_Set_Devname,Other_Permission_Set --justbranch
+  `$ sfdx permSetStuff:add --permissionset Permission_Set_Devname,Other_Permission_Set --addeverything
   `
   ];
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
     permissionset: flags.array({char: 'p', description: messages.getMessage('permissionSetDescription'), required: true, }),
-    justbranch: flags.boolean({char: 'j', description: messages.getMessage('justBranchDescription')}),
+    addeverything: flags.boolean({char: 'e', description: messages.getMessage('addEverythingDescription'), default: false}),
     permsetpath: flags.string({char: 'f', description: messages.getMessage('permsetpathDescription'), default: 'force-app/main/default/permissionsets'}),
     objectpath: flags.string({char: 'o', description: messages.getMessage('objectPathDescription'), default: 'force-app/main/default/objects'}),
-    noprompt: flags.boolean({char: 'n', description: messages.getMessage('nopromptDescription'), default:false})
+    noprompt: flags.boolean({char: 'n', description: messages.getMessage('nopromptDescription'), default:false}),
+    printall: flags.boolean({char:'r', description: 'Print field names', default: false}),
+    readpermission: flags.string({char:'d',description: messages.getMessage('readDescription'),default:'true', options: ['true','false']}),
+    editpermission: flags.string({char:'t',description: messages.getMessage('editDescription'),default:'true', options: ['true','false']}),
   };
 
   // Comment this out if your command does not require an org username
@@ -43,8 +46,14 @@ export default class Add extends SfdxCommand {
   protected static requiresProject = true;
 
   public async run(): Promise<AnyJson> {
+    //Sanity check
+    if (this.flags.readpermission == 'false' && this.flags.editpermission !== 'false') {
+      throw new SfdxError(
+        messages.getMessage('errorPermissionMismatch')
+      );
+    }
     
-    let filePaths = this.listFiles();
+    let filePaths = await this.listFieldPaths();
     if (!filePaths.length ) {
       this.ux.log('No files found with the options specified');
       return {filePaths};
@@ -52,19 +61,23 @@ export default class Add extends SfdxCommand {
     
     let permissionSets = this.flags.permissionset;
     for (let permSetName of permissionSets) {
-      let json = await this.getJsonFromXML(permSetName);
+      const path = this.getPermissionSetPath(permSetName);
+      let json = await this.getJsonFromXML(path);
+      
       let fileNames = filePaths.map(filepath => {
-        const {objectName, fieldName}:IMetadata = this._getObjectAndField(filepath);
+        const {objectName, fieldName}:ObjectAndField = this._getObjectAndField(filepath);
         return `${objectName}.${fieldName}`;
       });
+      
       const missing = fileNames.filter(fileName => !this.hasField(json, fileName));
+      
       if (missing.length) {
         let proceed = true;
         if (!this.flags.noprompt) {
-          const confirmMessage = `These fields:\n
-          ${missing.map(field=> `${field}, \n`)}
-          will be added to this permission set: ${permSetName}, both read and write.
-          Ok? (y/n)`;
+          
+          const confirmMessage = this.flags.printall 
+                                                  ? messages.getMessage('longFieldConfirm', [missing.join('\n'), permSetName])
+                                                  : messages.getMessage('shortFieldConfirm', [missing.length, permSetName]);
           let confirm = await this.ux.prompt(confirmMessage);
           if (!['y','yes'].includes(confirm.toLowerCase())) {
             proceed = false;
@@ -75,8 +88,8 @@ export default class Add extends SfdxCommand {
           missing.forEach(fieldName => {
             json = this.addField(json, fieldName);
           });
-          this.writeToFile(json,permSetName);
-          this.ux.log(`Wrote ${missing.length} field${missing.length > 1 ? 's': ''} to ${permSetName}`);
+          this.writeToFile(json,path);
+          this.ux.log(messages.getMessage('summary',[missing.length, permSetName]));
         }
 
       }
@@ -93,19 +106,26 @@ export default class Add extends SfdxCommand {
     return `${permSetDirectory}/${name}.permissionset-meta.xml`;
   }
   
-  private listFiles(): Array<string> {
+  private async listFieldPaths(): Promise<Array<string>> {
+    //Return a list of custom field paths to add to the permission set. 
     const objectPath = this.flags.objectpath;
-    if (this.flags.justbranch) {
-      return this._listFilesUsingGit(objectPath);
+    const fieldList = this.flags.addeverything ? glob.sync(`${objectPath}/**/*.field-meta.xml`) : this._listFilesUsingGit(objectPath);
+    const filtered = [];
+    //Filter out custom metadata and required fields. 
+    for (let fieldPath of fieldList) {
+      const fieldJson = await this.getJsonFromXML(fieldPath);
+      if (fieldPath.indexOf('__mdt/') === -1 && !this.isRequired(fieldJson)) {
+        filtered.push(fieldPath);
+      }
     }
-    return glob.sync(`${objectPath}/**/*.field-meta.xml`);
-
+    return filtered;
   }
   
   private _listFilesUsingGit(objectPath:string): Array<string> {
+    //Return a list of field metadata that are different from master. 
     let branchName = this._getBranchName();
-    if(!branchName || branchName === 'master' || branchName === 'main'){
-      throw new core.SfdxError(
+    if(!branchName || branchName === 'master'){
+      throw new SfdxError(
         messages.getMessage('errorCheckoutABranch', [branchName])
       );
     }
@@ -127,7 +147,7 @@ export default class Add extends SfdxCommand {
     return branchName;
   }
   
-  private _getObjectAndField(pathString:string): IMetadata {
+  private _getObjectAndField(pathString:string): ObjectAndField {
     //Given `path/to/Object__c/Field__c.field-meta.xml`, 
     // return {objectName: 'Object__c', fieldName: 'Field__c'}
     const arr = pathString.split('/');
@@ -136,21 +156,18 @@ export default class Add extends SfdxCommand {
     let fieldName = arr[l-1];
     let dotIndex = fieldName.indexOf('.');
     fieldName = fieldName.substring(0,dotIndex);
-    const rt:IMetadata = {
+    return {
       objectName,
       fieldName
     };
-    return rt;
   }
     
-  private async getJsonFromXML (permissionSetName:string): Promise<AnyJson> {
-    const permissionSetPath = this.getPermissionSetPath(permissionSetName);
-    const permSetString = fs.readFileSync(permissionSetPath, {encoding: 'utf-8'});
-    return await xml2js.parseStringPromise(permSetString);
+  private async getJsonFromXML (path:string): Promise<AnyJson> {
+    const xmlString = fs.readFileSync(path, {encoding: 'utf-8'});
+    return await xml2js.parseStringPromise(xmlString);
   }
   
-  private writeToFile(json:AnyJson, apiName:string): void {
-    let name = this.getPermissionSetPath(apiName);
+  private writeToFile(json:AnyJson, path:string): void {
     
     const renderOpts = { 
       'pretty': true, 
@@ -166,7 +183,7 @@ export default class Add extends SfdxCommand {
     let xml = builder.buildObject(json);
     
     
-    fs.writeFileSync(name, xml);
+    fs.writeFileSync(path, xml);
   }
   
   private hasField (permSet:any, fieldName:string): boolean {
@@ -176,15 +193,26 @@ export default class Add extends SfdxCommand {
   
   private addField (permSet:any, fieldName:string): AnyJson {
     permSet.PermissionSet.fieldPermissions.push({
-      editable: ['true'],
+      editable: [this.flags.editpermission],
       field: [fieldName],
-      readable: ['true']
+      readable: [this.flags.readpermission]
     });
     return permSet;
   }
+  
+  private isRequired (fieldJson:any): boolean {
+    //If field is required...
+    const conditions = {
+      required: fieldJson.CustomField.required && fieldJson.CustomField.required[0] == 'true',
+      masterDetail: fieldJson.CustomField.type && fieldJson.CustomField.type[0] == 'MasterDetail',
+      isName: fieldJson.CustomField.fullName[0] === 'Name',
+      isOwner: fieldJson.CustomField.fullName[0] === 'OwnerId'
+    };
+    return Object.values(conditions).some(check => check);
+  }
 }
 
-interface IMetadata {
+interface ObjectAndField {
   objectName: string,
   fieldName: string,
 }

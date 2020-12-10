@@ -1,16 +1,17 @@
-permSetStuffer
+Permission Set Stuffer
 ====================
 
-Automatically add stuff to your permission sets. Dangerous and cheeky.  
+Automatically add fields to your permission sets because you forgot to do it while you were working, or you're lazy. 
+This is dangerous and cheeky.
 
-[![Version](https://img.shields.io/npm/v/permSetStuffer.svg)](https://npmjs.org/package/permSetStuffer)
+<!-- [![Version](https://img.shields.io/npm/v/permSetStuffer.svg)](https://npmjs.org/package/permSetStuffer)
 [![CircleCI](https://circleci.com/gh/dansadsf/permSetStuffer/tree/master.svg?style=shield)](https://circleci.com/gh/dansadsf/permSetStuffer/tree/master)
 [![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/dansadsf/permSetStuffer?branch=master&svg=true)](https://ci.appveyor.com/project/heroku/permSetStuffer/branch/master)
 [![Codecov](https://codecov.io/gh/dansadsf/permSetStuffer/branch/master/graph/badge.svg)](https://codecov.io/gh/dansadsf/permSetStuffer)
 [![Greenkeeper](https://badges.greenkeeper.io/dansadsf/permSetStuffer.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/dansadsf/permSetStuffer/badge.svg)](https://snyk.io/test/github/dansadsf/permSetStuffer)
 [![Downloads/week](https://img.shields.io/npm/dw/permSetStuffer.svg)](https://npmjs.org/package/permSetStuffer)
-[![License](https://img.shields.io/npm/l/permSetStuffer.svg)](https://github.com/dansadsf/permSetStuffer/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/permSetStuffer.svg)](https://github.com/dansadsf/permSetStuffer/blob/master/package.json) -->
 
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
