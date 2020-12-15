@@ -16,27 +16,22 @@ This is dangerous and cheeky.
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
 <!-- tocstop -->
+
 <!-- install -->
-<!-- usage -->
-```sh-session
-$ npm install -g permission-set-stuffer
-$ sfdx COMMAND
-running command...
-$ sfdx (-v|--version|version)
-permission-set-stuffer/0.0.0 darwin-x64 node-v12.16.1
-$ sfdx --help [COMMAND]
-USAGE
-  $ sfdx COMMAND
-...
+```bash
+#install
+sfdx plugins:install permission-set-stuffer
+
+#install from source
+git clone https://github.com/dansadsf/permSetStuffer.git
+cd permSetStuffer
+sfdx plugins:link
 ```
+<!-- usage -->
 <!-- usagestop -->
 <!-- commands -->
-* [`sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-dspermsetstuff--p-array--e--f-string--o-string--n--r--d-string--t-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-
-## `sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
-
-Add fields from your current branch to your permission sets
-
+# Commands
+## ds:permset:stuff
 ```
 Add fields from your current branch to your permission sets
 
