@@ -19,11 +19,11 @@ This is dangerous and cheeky.
 <!-- install -->
 <!-- usage -->
 ```sh-session
-$ npm install -g permSetStuffer
+$ npm install -g permission-set-stuffer
 $ sfdx COMMAND
 running command...
 $ sfdx (-v|--version|version)
-permSetStuffer/0.0.0 darwin-x64 node-v12.16.1
+permission-set-stuffer/0.0.0 darwin-x64 node-v12.16.1
 $ sfdx --help [COMMAND]
 USAGE
   $ sfdx COMMAND
@@ -31,7 +31,55 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
+* [`sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-dspermsetstuff--p-array--e--f-string--o-string--n--r--d-string--t-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
+## `sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+Add fields from your current branch to your permission sets
+
+```
+Add fields from your current branch to your permission sets
+
+USAGE
+  $ sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] 
+  [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+OPTIONS
+  -d, --readpermission=true|false                                                   [default: true] Allow read
+
+  -e, --addeverything                                                               Add every field to permission set,
+                                                                                    not just current branch
+
+  -f, --permsetpath=permsetpath                                                     [default:
+                                                                                    force-app/main/default/permissionset
+                                                                                    s] The path to your Permission Set
+                                                                                    metadata
+
+  -n, --noprompt                                                                    Do the updates without prompting
+
+  -o, --objectpath=objectpath                                                       [default:
+                                                                                    force-app/main/default/objects] The
+                                                                                    path to your Object metadata
+
+  -p, --permissionset=permissionset                                                 (required) Comma seperated list of
+                                                                                    Permission Set names
+
+  -r, --printall                                                                    Print field names
+
+  -t, --editpermission=true|false                                                   [default: true] Allow edit
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+EXAMPLES
+  $ sfdx ds:permset:stuff --permissionset Permission_Set_Devname,Other_Permission_Set 
+  
+  $ sfdx ds:permset:stuff --permissionset Permission_Set_Devname,Other_Permission_Set --addeverything
+```
+
+_See code: [lib/commands/ds/permset/stuff.js](https://github.com/dansadsf/permSetStuffer/blob/v0.0.0/lib/commands/ds/permset/stuff.js)_
 <!-- commandsstop -->
 <!-- debugging-your-plugin -->
 # Debugging your plugin

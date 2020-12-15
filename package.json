@@ -47,7 +47,7 @@
     "commands": "./lib/commands",
     "bin": "sfdx",
     "topics": {
-      "stuffer": {
+      "permset": {
         "description": "Commands to stuff your permission sets."
       }
     },

@@ -11,16 +11,16 @@ Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages('permission-set-stuffer', 'add');
+const messages = Messages.loadMessages('permission-set-stuffer', 'stuff');
 
-export default class Add extends SfdxCommand {
+export default class Stuff extends SfdxCommand {
 
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  `$ sfdx permSetStuff:add --permissionset Permission_Set_Devname,Other_Permission_Set 
+  `$ sfdx ds:permset:stuff --permissionset Permission_Set_Devname,Other_Permission_Set 
   `,
-  `$ sfdx permSetStuff:add --permissionset Permission_Set_Devname,Other_Permission_Set --addeverything
+  `$ sfdx ds:permset:stuff --permissionset Permission_Set_Devname,Other_Permission_Set --addeverything
   `
   ];
 
