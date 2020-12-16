@@ -1,9 +1,5 @@
-Permission Set Stuffer
+SFDX Plugins
 ====================
-
-Automatically add fields to your permission sets because you forgot to do it while you were working, or you're lazy. 
-This is dangerous and cheeky.
-
 <!-- [![Version](https://img.shields.io/npm/v/permSetStuffer.svg)](https://npmjs.org/package/permSetStuffer)
 [![CircleCI](https://circleci.com/gh/dansadsf/permSetStuffer/tree/master.svg?style=shield)](https://circleci.com/gh/dansadsf/permSetStuffer/tree/master)
 [![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/dansadsf/permSetStuffer?branch=master&svg=true)](https://ci.appveyor.com/project/heroku/permSetStuffer/branch/master)
@@ -20,18 +16,39 @@ This is dangerous and cheeky.
 <!-- install -->
 ```bash
 #install
-sfdx plugins:install permission-set-stuffer
+sfdx plugins:install ds-sfdx-plugins
 
 #install from source
-git clone https://github.com/dansadsf/permSetStuffer.git
-cd permSetStuffer
+git clone https://github.com/dansadsf/ds-sfdx-plugins.git
+cd ds-sfdx-plugins
 sfdx plugins:link
 ```
 <!-- usage -->
+```sh-session
+$ npm install -g ds-sfdx-plugins
+$ sfdx COMMAND
+running command...
+$ sfdx (-v|--version|version)
+ds-sfdx-plugins/0.0.0 darwin-x64 node-v12.16.1
+$ sfdx --help [COMMAND]
+USAGE
+  $ sfdx COMMAND
+...
+```
+## Permission Set Stuffer
+
+Automatically add fields to your permission sets because you forgot to do it while you were working, or you're lazy. 
+This is dangerous and cheeky.
+
+
 <!-- usagestop -->
 <!-- commands -->
-# Commands
-## ds:permset:stuff
+* [`sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-dspermsetstuff--p-array--e--f-string--o-string--n--r--d-string--t-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+## `sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+Add fields from your current branch to your permission sets
+
 ```
 Add fields from your current branch to your permission sets
 
@@ -74,7 +91,7 @@ EXAMPLES
   $ sfdx ds:permset:stuff --permissionset Permission_Set_Devname,Other_Permission_Set --addeverything
 ```
 
-_See code: [lib/commands/ds/permset/stuff.js](https://github.com/dansadsf/permSetStuffer/blob/v0.0.0/lib/commands/ds/permset/stuff.js)_
+_See code: [lib/commands/ds/permset/stuff.js](https://github.com/dansadsf/ds-sfdx-plugins/blob/v0.0.0/lib/commands/ds/permset/stuff.js)_
 <!-- commandsstop -->
 <!-- debugging-your-plugin -->
 # Debugging your plugin

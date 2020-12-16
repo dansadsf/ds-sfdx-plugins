@@ -1,9 +1,9 @@
 {
-  "name": "permission-set-stuffer",
+  "name": "ds-sfdx-plugins",
   "description": "Automatically add stuff to your permission sets. Dangerous and cheeky.",
   "version": "0.0.0",
   "author": "Daniel Sadavoy",
-  "bugs": "https://github.com/dansadsf/permSetStuffer/issues",
+  "bugs": "https://github.com/dansadsf/ds-sfdx-plugins/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -38,7 +38,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/dansadsf/permSetStuffer",
+  "homepage": "https://github.com/dansadsf/ds-sfdx-plugins",
   "keywords": [
     "sfdx-plugin"
   ],
@@ -47,15 +47,19 @@
     "commands": "./lib/commands",
     "bin": "sfdx",
     "topics": {
-      "permset": {
-        "description": "Commands to stuff your permission sets."
+      "ds": {
+        "permset": {
+          "stuff": {
+            "description": "Commands to stuff your permission sets."
+          }
+        }
       }
     },
     "devPlugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "dansadsf/permSetStuffer",
+  "repository": "dansadsf/ds-sfdx-plugins",
   "scripts": {
     "lint": "tslint --project . --config tslint.json --format stylish",
     "postpack": "rm -f oclif.manifest.json",
