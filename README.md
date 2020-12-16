@@ -23,35 +23,12 @@ git clone https://github.com/dansadsf/ds-sfdx-plugins.git
 cd ds-sfdx-plugins
 sfdx plugins:link
 ```
-<!-- usage -->
-```sh-session
-$ npm install -g ds-sfdx-plugins
-$ sfdx COMMAND
-running command...
-$ sfdx (-v|--version|version)
-ds-sfdx-plugins/0.0.0 darwin-x64 node-v12.16.1
-$ sfdx --help [COMMAND]
-USAGE
-  $ sfdx COMMAND
-...
-```
 ## Permission Set Stuffer
 
 Automatically add fields to your permission sets because you forgot to do it while you were working, or you're lazy. 
 This is dangerous and cheeky.
 
-
-<!-- usagestop -->
-<!-- commands -->
-* [`sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-dspermsetstuff--p-array--e--f-string--o-string--n--r--d-string--t-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-
-## `sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
-
-Add fields from your current branch to your permission sets
-
 ```
-Add fields from your current branch to your permission sets
-
 USAGE
   $ sfdx ds:permset:stuff -p <array> [-e] [-f <string>] [-o <string>] [-n] [-r] [-d <string>] [-t <string>] [--json] 
   [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
